@@ -1,14 +1,27 @@
 {
-  "name": "emotion-analysis",
-  "version": "1.0.0",
+  "name": "@atillasertkaya/emotion-analysis",
+  "version": "1.0.9",
   "description": "",
   "main": "index.js",
+  "bin": {
+    "@atillasertkaya/emotion-analysis": "bin/emotion-analysis",
+    "emotion-analysis": "bin/emotion-analysis"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "glob": "^8.1.0"
+    "esm": "^3.2.25",
+    "glob": "^8.1.0",
+    "shelljs": "^0.8.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/atillasertkaya/emotion-analysis"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   }
 }
