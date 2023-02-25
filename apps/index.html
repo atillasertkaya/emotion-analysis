@@ -1,0 +1,68 @@
+<form [formGroup]="form" (ngSubmit)="checkAndSubmit()" [class.hidden]="loadingForm">
+    <p>{{ 'team.settings.privacy.subtitle' | translate }}</p>
+    <column>
+      <ce-form-validation [form]="form" [errorMessages]="errorMessages"> </ce-form-validation>
+      <ce-control-validation [errorMessages]="errorMessages">
+        <ce-radio-button-group formControlName="privacyType" (change)="onPrivacySelection($event)">
+          <ce-radio-button
+            [value]="CloudTeamPrivacyType.PUBLIC"
+            ceTestingUid="settingsPrivacy-privacy-Public-radio"
+          >
+            <b>{{ 'team.settings.privacy.public.title' | translate }}</b>
+            <div ceRadioButtonDescription>{{ 'team.settings.privacy.public.description' | translate }}</div>
+          </ce-radio-button>
+          <ce-radio-button
+            [value]="CloudTeamPrivacyType.PRIVATE"
+            ceTestingUid="settingsPrivacy-privacy-Private-radio"
+          >
+            <b>{{ 'team.settings.privacy.private.title' | translate }}</b>
+            <div ceRadioButtonDescription>{{ 'team.settings.privacy.private.description' | translate }}</div>
+          </ce-radio-button>
+          <ce-radio-button
+            class="no-margin--bottom"
+            [value]="CloudTeamPrivacyType.PUBLIC_TO_DOMAIN"
+            ceTestingUid="settingsPrivacy-privacy-Public-To-Domain-radio"
+          >
+            <b>{{ 'team.settings.privacy.public-to-domain.title' | translate }}</b>
+            <div class="padding-bottom--xs" ceRadioButtonDescription>
+              {{ 'team.settings.privacy.public-to-domain.description' | translate }}
+              <div
+                class="margin-right--lg"
+                *ngIf="form.get('privacyType').value === CloudTeamPrivacyType.PUBLIC_TO_DOMAIN"
+              >
+                <ce-control-validation [errorMessages]="errorMessages" aria-live="polite">
+                  <ce-input-group>
+                    <textarea ceInput formControlName="allowedDomain" aria-required="true"></textarea>
+                  </ce-input-group>
+                </ce-control-validation>
+              </div>
+            </div>
+          </ce-radio-button>
+        </ce-radio-button-group>
+      </ce-control-validation>
+    </column>
+  
+    <row>
+      <column xs="12" class="text-right">
+        <button
+          ceButton
+          [disabled]="!form.dirty"
+          class="pull-left"
+          variant="info"
+          (click)="reset()"
+          ceTestingUid="settingsPrivacy-cancel-button"
+        >
+          {{ 'app.cancel' | translate }}
+        </button>
+        <button
+          ceButton
+          [disabled]="!form.dirty || form.invalid"
+          [loading]="submittingForm"
+          ceTestingUid="settingsPrivacy-save-button"
+        >
+          {{ 'app.save' | translate }}
+        </button>
+      </column>
+    </row>
+  </form>
+  
