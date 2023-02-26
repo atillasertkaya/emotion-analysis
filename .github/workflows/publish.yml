@@ -18,3 +18,7 @@ jobs:
       - run: npm publish
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Patch and push new version
+        run: |
+          npm version --patch
+          git push
