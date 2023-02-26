@@ -8,6 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        env:
+          token: ${{ secrets.NPM_TOKEN }}
       - uses: actions/setup-node@v2
         with:
           node-version: 16
@@ -18,7 +20,11 @@ jobs:
       - run: npm publish
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Setup GIT
+        run: |
+          git config user.name 'atillasertkaya'
+          git config user.email 'atillasertkaya@gmail.com'
       - name: Patch and push new version
         run: |
-          npm version --patch
+          npm version minor
           git push
