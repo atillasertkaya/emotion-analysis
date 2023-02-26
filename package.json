@@ -1,6 +1,6 @@
 {
   "name": "@atillasertkaya/emotion-analysis",
-  "version": "1.0.9",
+  "version": "1.1.5",
   "description": "",
   "main": "index.js",
   "bin": {
@@ -14,7 +14,9 @@
   "license": "ISC",
   "dependencies": {
     "esm": "^3.2.25",
+    "fs": "0.0.1-security",
     "glob": "^8.1.0",
+    "path-to-regexp": "^6.2.1",
     "shelljs": "^0.8.5"
   },
   "repository": {

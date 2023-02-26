@@ -1,4 +1,4 @@
-
+export const template = `
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,7 +17,16 @@
             margin: 0 auto;
         }
         table {
+            margin-top: 20px;
             width: 100%;
+        }
+        details {
+            margin-bottom: 20px;
+        }
+        summary {
+            font-size: 21px;
+            font-weight: bold;
+            cursor: pointer;
         }
         table,
         td {
@@ -29,6 +38,7 @@
 
         td {
             padding: 10px 20px;
+            line-height: 1.3;
         }
 
         td a {
@@ -40,8 +50,9 @@
 
 <body>
     <div class="container">
-    <h1>ce-control-validation</h1><p><strong>ce-control-validation</strong> component is used in 2 places.</p><div class='table-container'><table><tr><td colspan='2'><strong>apps/index.html</strong></td></tr><tr><td>Line 5</td><td align="end"><a href="https://github.com/celonis/ems-frontend/blob/main/apps/index.html#L5" target="_blank">See File</a></td></tr><tr><td>Line 33</td><td align="end"><a href="https://github.com/celonis/ems-frontend/blob/main/apps/index.html#L33" target="_blank">See File</a></td></tr></table></div>
+    __PLACEHOLDER__
     </div>
 </body>
 
 </html>
+`
