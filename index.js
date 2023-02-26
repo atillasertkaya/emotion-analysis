@@ -3,7 +3,7 @@ const fs = require('fs-extra');
 const shell = require('shelljs');
 const { match } = require("path-to-regexp");
 const { template } = require("./template");
-const loading = require('loading-cli');
+var Spinner = require('cli-spinner').Spinner;
 
 const getGithubLink = (file, line) => `https://github.com/celonis/ems-frontend/blob/main/${file}#L${line}`;
 
@@ -24,9 +24,14 @@ const getCategory = (file) => {
 
 const getFile = (filename) => `emotion-report/${filename}`;
 
-const startLoading = () => loading('your report is being generated').start();
+const startLoading = () => (new Spinner('your report is being generated')).start();
 
-const getNameFromSlug = (slug) => slug.toLowerCase().replace(/-/g,' ');
+const getNameFromSlug = (slug) => {
+  var words = slug.split("-");
+  return words.map(function(word) {
+    return word.charAt(0).toUpperCase() + word.substring(1).toLowerCase();
+  }).join(' ');
+}
 
 export function init(args) {
   const command = args[2];
@@ -125,8 +130,8 @@ function summary() {
 
       const reportFile = getFile('report.html');
 
-      loading.stop();
-      
+      loading.stop(true);
+
       fs.outputFile(reportFile, template.replace("__PLACEHOLDER__", html.join(""))).then(() => {
         shell.echo('The report is generated...');
         shell.exec(`open ${reportFile}`);
@@ -253,7 +258,7 @@ function search(component, callback) {
 
     const reportFile = getFile(`${component}.html`);
 
-    loading.stop();
+    loading.stop(true);
 
     fs.outputFile(reportFile, template.replace("__PLACEHOLDER__", html.join(""))).then(() => {
       shell.echo('The report is generated...');
