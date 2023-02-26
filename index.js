@@ -26,6 +26,8 @@ const getFile = (filename) => `emotion-report/${filename}`;
 
 const startLoading = () => loading('your report is being generated').start();
 
+const getNameFromSlug = (slug) => slug.toLowerCase().replace(/-/g,' ');
+
 export function init(args) {
   const command = args[2];
   const param = args[3];
@@ -123,10 +125,9 @@ function summary() {
 
       const reportFile = getFile('report.html');
 
+      loading.stop();
+      
       fs.outputFile(reportFile, template.replace("__PLACEHOLDER__", html.join(""))).then(() => {
-
-        loading.stop();
-
         shell.echo('The report is generated...');
         shell.exec(`open ${reportFile}`);
       });
@@ -221,7 +222,7 @@ function search(component, callback) {
 
       html.push("<details>");
 
-      html.push(`<summary>${app}</summary>`);
+      html.push(`<summary>${getNameFromSlug(app)}</summary>`);
 
       html.push("<table>");
 
@@ -252,9 +253,9 @@ function search(component, callback) {
 
     const reportFile = getFile(`${component}.html`);
 
-    fs.outputFile(reportFile, template.replace("__PLACEHOLDER__", html.join(""))).then(() => {
-      loading.stop();
+    loading.stop();
 
+    fs.outputFile(reportFile, template.replace("__PLACEHOLDER__", html.join(""))).then(() => {
       shell.echo('The report is generated...');
       shell.exec(`open ${reportFile}`);
     });
