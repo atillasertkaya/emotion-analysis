@@ -2,7 +2,8 @@ const glob = require('glob');
 const fs = require('fs');
 const shell = require('shelljs');
 const { match } = require("path-to-regexp");
-const { template } = require("./template")
+const { template } = require("./template");
+const Spinner = require('cli-spinner').Spinner;
 
 const getGithubLink = (file, line) => `https://github.com/celonis/ems-frontend/blob/main/${file}#L${line}`;
 
@@ -21,12 +22,24 @@ const getCategory = (file) => {
   return "uncategorised";
 }
 
+const spinner = new Spinner('your report is being generated');
+
+const reportReady = (html = [])=> {
+  fs.writeFileSync('report.html', template.replace("__PLACEHOLDER__", html.join("")));
+  
+  spinner.stop(true);
+
+  shell.echo('The report is generated in report.html');
+  shell.exec('open ./report.html');
+}
+
 export function init(args) {
   const command = args[2];
   const param = args[3];
 
   if (!command) {
-    throw new Error("Please provide a command");
+    shell.echo("Please provide a command!");
+    return;
   }
 
   if (command === 'component') {
@@ -34,12 +47,20 @@ export function init(args) {
   } else if (command === 'summary') {
     summary()
   } else {
-    throw new Error("command is invalid!");
+    shell.echo("command is invalid!");
   }
 }
 
 function summary() {
-  const globFn = glob('node_modules/@celonis/emotion/**/*.component.d.ts', (err, files) => {
+  spinner.start();
+
+  const globFn = glob('node_modules/@celonis/emotion/**/*.component.d.ts', (error, files) => {
+
+    if(error) {
+      spinner.stop(true);
+      shell.echo("Error while generating the report!", error);
+      return;
+    }
 
     const fn = match("(.*)/:component.component.d.ts");
 
@@ -105,10 +126,7 @@ function summary() {
 
       html.push("</table>");
 
-      fs.writeFileSync('report.html', template.replace("__PLACEHOLDER__", html.join("")));
-  
-      shell.echo('The report is generated...');
-      shell.exec('open ./report.html');
+      reportReady(html);
     });
   });
 }
@@ -123,14 +141,19 @@ function asyncSearch({ category, component }) {
 
 function search(component, callback) {
   if (!component) {
-    throw new Error("Please provide a component");
+    shell.echo("Please provide a component");
+    return;
   }
+
+  spinner.start();
 
   const report = [];
 
-  const globFn = glob('{,!(node_modules)/**/}*.html', (err, files) => {
-    if (err) {
-      console.log('Error while generating the report!', err);
+  const globFn = glob('{,!(node_modules)/**/}*.html', (error, files) => {
+    if (error) {
+      spinner.stop(true);
+      shell.echo("Error while generating the report!", error);
+      return;
     } else {
       files.forEach((file) => {
         let content = fs.readFileSync(file).toString();
@@ -220,9 +243,6 @@ function search(component, callback) {
       html.push("</details>");
     });
 
-    fs.writeFileSync('report.html', template.replace("__PLACEHOLDER__", html.join("")));
-
-    shell.echo('The report is generated...');
-    shell.exec('open ./report.html');
+    reportReady(html);
   })
 }

@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cli-spinner": "^0.2.10",
     "esm": "^3.2.25",
     "fs": "0.0.1-security",
     "glob": "^8.1.0",
