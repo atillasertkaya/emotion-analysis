@@ -128,7 +128,7 @@ function summary() {
 
       html.push("</table>");
 
-      const reportFile = getFile('report.html');
+      const reportFile = getFile('index.html');
 
       loading.stop(true);
 
