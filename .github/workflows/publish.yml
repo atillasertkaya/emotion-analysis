@@ -26,5 +26,5 @@ jobs:
           git config user.email 'atillasertkaya@gmail.com'
       - name: Patch and push new version
         run: |
-          npm version minor
+          npm version patch
           git push
